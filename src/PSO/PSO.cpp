@@ -4,13 +4,13 @@
 
 using namespace PSON;
 
-vecNN PSO::losuj(vecNN x, vecf C)
+vecNN PSO::losuj(vecNN x, vecf C, int n)
 {
     float C1,C2,C3,C4;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, 1);
-    for(int i=0; i<100; i++)
+    for(int i=0; i<n; i++)
     {
 
     C1=dis(gen);
