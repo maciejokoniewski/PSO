@@ -13,8 +13,8 @@ class PSO {
 public:
 
 
-    vecNN losuj(vecNN x, vecf C);
-
+    vecNN random(vecNN x, vecf C);
+    vecf velocity();
 
 
 };

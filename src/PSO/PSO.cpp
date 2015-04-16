@@ -4,7 +4,7 @@
 
 using namespace PSON;
 
-vecNN PSO::losuj(vecNN x, vecf C)
+vecNN PSO::random(vecNN x, vecf C)
 {
     float C1,C2,C3,C4;
     std::random_device rd;
@@ -31,4 +31,11 @@ vecNN PSO::losuj(vecNN x, vecf C)
     return x;
 }
 
+vecf PSO::velocity()
+{
+
+
+
+
+}
 

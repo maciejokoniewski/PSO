@@ -13,10 +13,44 @@ main()
     PSO obiekt;
     vecNN x,d;
     vecf C;
+    char c0[30],c1[30],c2[30],c3[30];
+    tinyxml2::XMLDocument model;
 
-    d=obiekt.losuj(x,C);
+    d=obiekt.random(x,C);
+    model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
+    if (model.ErrorID())
+               std::cout << "unable to load config file.\n";
 
-   /* for(int i=0; i<n; i++)
+    tinyxml2::XMLElement* varianceDepth = model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->ToElement();
+
+
+
+    sprintf(c0, "%f", d[0][0]);
+    sprintf(c1, "%f", d[0][1]);
+    sprintf(c2, "%f", d[0][2]);
+    sprintf(c3, "%f", d[0][3]);
+    varianceDepth->SetAttribute("c0", c0);
+    varianceDepth->SetAttribute("c1", c1);
+    varianceDepth->SetAttribute("c2", c2);
+    varianceDepth->SetAttribute("c3", c3);
+
+    model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
+
+std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
+std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
+std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
+
+/*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
+    const char* C1=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c1");
+    const char* C2=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c2");
+    const char* C3=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c3");
+
+    cout<<C0<<endl;
+    cout<<C1<<endl;
+    cout<<C2<<endl;
+    cout<<C3<<endl;
+*/
+   /* for(int i=0; i<100; i++)
     {
         for(int j=0; j<4; j++)
         {
