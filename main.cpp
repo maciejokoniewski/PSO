@@ -13,9 +13,8 @@ main()
     PSO obiekt;
     vecNN x,d;
     vecf C;
-    n = 100;                // liczba osobników populacji
 
-    d=obiekt.losuj(x,C, n);
+    d=obiekt.losuj(x,C);
 
    /* for(int i=0; i<n; i++)
     {
