@@ -1,20 +1,22 @@
 #include "../include/PSO/PSO.h"
 #include "../include/Defs/PSO_defs.h"
+#include <random>
 
 using namespace PSON;
 
 vecNN PSO::losuj(vecNN x, vecf C)
 {
-    srand (time(NULL));
     float C1,C2,C3,C4;
-
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0, 1);
     for(int i=0; i<100; i++)
     {
 
-    C1=(float) rand() / (float) (RAND_MAX);
-    C2=(float) rand() / (float) (RAND_MAX);
-    C3=(float) rand() / (float) (RAND_MAX);
-    C4=(float) rand() / (float) (RAND_MAX);
+    C1=dis(gen);
+    C2=dis(gen);
+    C3=dis(gen);
+    C4=dis(gen);
     C.push_back(C1);
     C.push_back(C2);
     C.push_back(C3);
