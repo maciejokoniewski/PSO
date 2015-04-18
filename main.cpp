@@ -15,8 +15,9 @@ main()
     vecf C;
     char c0[30],c1[30],c2[30],c3[30];
     tinyxml2::XMLDocument model;
+    int n = 100;                        //population's quantity
 
-    d=obiekt.random(x,C);
+    d=obiekt.random(x, C, n);
     model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
     if (model.ErrorID())
                std::cout << "unable to load config file.\n";
@@ -36,9 +37,9 @@ main()
 
     model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
 
-std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
-std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
-std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
+//std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
+//std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
+//std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
     const char* C1=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c1");
@@ -50,7 +51,7 @@ std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.p
     cout<<C2<<endl;
     cout<<C3<<endl;
 */
-   /* for(int i=0; i<100; i++)
+   /* for(int i=0; i<n; i++)
     {
         for(int j=0; j<4; j++)
         {

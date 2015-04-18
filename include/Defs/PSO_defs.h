@@ -16,8 +16,8 @@
 namespace PSON {
 
 
-typedef  std::vector < std::vector<float>> vecNN;
-typedef  std::vector <float> vecf;
+typedef  std::vector < std::vector<float>> vecNN;           //definition of float vectors of vectors
+typedef  std::vector <float> vecf;                          //definition of float vector
 
 }
 

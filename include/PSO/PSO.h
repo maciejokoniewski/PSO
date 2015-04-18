@@ -12,8 +12,8 @@ using namespace PSON;
 class PSO {
 public:
 
-
-    vecNN random(vecNN x, vecf C);
+    /* definitions of functions for PSO class */
+    vecNN random(vecNN x, vecf C, int n);
     vecf velocity();
 
 
