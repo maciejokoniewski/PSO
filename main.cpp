@@ -5,7 +5,7 @@
 using namespace std;
 using namespace PSON;
 
-main()
+main(int argc, char *argv[])
 {
     try{
 
@@ -37,9 +37,24 @@ main()
 
     model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
 
+//generating path for ate with argv[1]
+std::string path11;
+std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
+std::string part12("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
+std::string str(argv[1]);
+path11=part11+str+part12;
+const char *path1 = path11.c_str();
+
+//generating path for rpe with argv[1]
+std::string path21;
+std::string part21("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/");
+std::string part22("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
+path21=part21+str+part22;
+const char *path2 = path21.c_str();
+
 //std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
-//std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
-//std::system("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/maciej/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
+std::system(path1);
+std::system(path2);
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
     const char* C1=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c1");
@@ -65,7 +80,7 @@ main()
     catch(...)
     {
 
-        cout<<"something gone wrong"<<endl;
+        cout<<"something's gone wrong"<<endl;
 
     }
 
