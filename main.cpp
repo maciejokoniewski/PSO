@@ -1,6 +1,7 @@
 #include <iostream>
 #include "3rdParty/tinyXML/tinyxml2.h"
 #include "src/PSO/PSO.cpp"
+#include <fstream>
 
 using namespace std;
 using namespace PSON;
@@ -15,6 +16,11 @@ main(int argc, char *argv[])
     char c0[30],c1[30],c2[30],c3[30];
     tinyxml2::XMLDocument model;
     int n = 100;                        //population's quantity
+    std::fstream ate_file;
+
+    ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
+    if(!ate_file.is_open())
+         std::cout << "unable to load ate.res file.\n";
 
     model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
     if (model.ErrorID())
@@ -36,24 +42,27 @@ main(int argc, char *argv[])
 
     model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
 
-//generating path for ate with argv[1]
-std::string path11;
-std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
-std::string part12("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
-std::string str(argv[1]);
-path11=part11+str+part12;
-const char *path1 = path11.c_str();
+    //generating path for ate with argv[1]
+    std::string path11;
+    std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
+    std::string part12("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
+    std::string str(argv[1]);
+    path11=part11+str+part12;
+    const char *path1 = path11.c_str();
 
-//generating path for rpe with argv[1]
-std::string path21;
-std::string part21("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/");
-std::string part22("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
-path21=part21+str+part22;
-const char *path2 = path21.c_str();
+    //generating path for rpe with argv[1]
+    std::string path21;
+    std::string part21("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/");
+    std::string part22("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
+    path21=part21+str+part22;
+    const char *path2 = path21.c_str();
 
-//std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
-std::system(path1);
-std::system(path2);
+    //std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
+    std::system(path1);
+    std::system(path2);
+
+
+
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
     const char* C1=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c1");
