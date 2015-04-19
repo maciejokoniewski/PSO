@@ -11,25 +11,24 @@ main(int argc, char *argv[])
 
 
     PSO obiekt;
-    vecNN x,d;
-    vecf C;
+    vecNN location,v;
     char c0[30],c1[30],c2[30],c3[30];
     tinyxml2::XMLDocument model;
     int n = 100;                        //population's quantity
 
-    d=obiekt.random(x, C, n);
     model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
     if (model.ErrorID())
                std::cout << "unable to load config file.\n";
 
     tinyxml2::XMLElement* varianceDepth = model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->ToElement();
 
+    location=obiekt.random(n);
+    v=obiekt.random(n);
 
-
-    sprintf(c0, "%f", d[0][0]);
-    sprintf(c1, "%f", d[0][1]);
-    sprintf(c2, "%f", d[0][2]);
-    sprintf(c3, "%f", d[0][3]);
+    sprintf(c0, "%f", location[0][0]);
+    sprintf(c1, "%f", location[0][1]);
+    sprintf(c2, "%f", location[0][2]);
+    sprintf(c3, "%f", location[0][3]);
     varianceDepth->SetAttribute("c0", c0);
     varianceDepth->SetAttribute("c1", c1);
     varianceDepth->SetAttribute("c2", c2);

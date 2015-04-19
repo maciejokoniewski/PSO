@@ -8,8 +8,10 @@ using namespace PSON;
 
 //function random draws random numbers from the range 0 to 1 in order to create population of particles
 //x is vector of whole population; C is vector which represents one member of population; n is size of population
-vecNN PSO::random(vecNN x, vecf C, int n)
+vecNN PSO::random(int n)
 {
+    vecNN x;
+    vecf C;
     float C1,C2,C3,C4;
     std::random_device rd;
     std::mt19937 gen(rd());

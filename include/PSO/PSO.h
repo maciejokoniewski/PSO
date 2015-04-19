@@ -13,7 +13,7 @@ class PSO {
 public:
 
     /* definitions of functions for PSO class */
-    vecNN random(vecNN x, vecf C, int n);
+    vecNN random(int n);
     vecf velocity();
 
 
