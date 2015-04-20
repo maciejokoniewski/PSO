@@ -96,10 +96,10 @@ main(int argc, char *argv[])
 
 
         }
-    catch(...)
-    {
+   catch (const std::exception& ex) {
 
         cout<<"something's gone wrong"<<endl;
+        std::cerr << ex.what() << std::endl;
 
     }
 
