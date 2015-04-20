@@ -11,6 +11,7 @@ using namespace PSON;
 
 class PSO {
 public:
+    vecNN location,v;
 
     /* definitions of functions for PSO class */
     vecNN random(int n);

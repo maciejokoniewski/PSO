@@ -11,8 +11,7 @@ main(int argc, char *argv[])
     try{
 
 
-    PSO obiekt;
-    vecNN location,v;
+    PSO obiektPSO;
     char c0[30],c1[30],c2[30],c3[30];
     tinyxml2::XMLDocument model;
     int n = 100;                        //population's quantity
@@ -28,13 +27,13 @@ main(int argc, char *argv[])
 
     tinyxml2::XMLElement* varianceDepth = model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->ToElement();
 
-    location=obiekt.random(n);
-    v=obiekt.random(n);
+    obiektPSO.location=obiektPSO.random(n);
+    obiektPSO.v=obiektPSO.random(n);
 
-    sprintf(c0, "%f", location[0][0]);
-    sprintf(c1, "%f", location[0][1]);
-    sprintf(c2, "%f", location[0][2]);
-    sprintf(c3, "%f", location[0][3]);
+    sprintf(c0, "%f", obiektPSO.location[0][0]);
+    sprintf(c1, "%f", obiektPSO.location[0][1]);
+    sprintf(c2, "%f", obiektPSO.location[0][2]);
+    sprintf(c3, "%f", obiektPSO.location[0][3]);
     varianceDepth->SetAttribute("c0", c0);
     varianceDepth->SetAttribute("c1", c1);
     varianceDepth->SetAttribute("c2", c2);
