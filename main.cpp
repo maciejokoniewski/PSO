@@ -20,13 +20,13 @@ main(int argc, char *argv[])
     float mean_error;
 
 
-    /************* opennig ate.res **********************/
+    /************* opening ate.res **********************/
     ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
     if(!ate_file.good() == true)
          std::cout << "unable to load ate.res file.\n";
 
 
-    /************* opennig fileModel.xml **********************/
+    /************* opening fileModel.xml **********************/
     model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
     if (model.ErrorID())
          std::cout << "unable to load config file.\n";
