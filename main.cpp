@@ -16,6 +16,7 @@ main(int argc, char *argv[])
     tinyxml2::XMLDocument model;
     int n = 100;                        //population's quantity
     std::fstream ate_file;
+    std::ofstream mean_error_file;
     std::string ate_data;
     float mean_error;
 
@@ -24,6 +25,8 @@ main(int argc, char *argv[])
     ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
     if(!ate_file.good() == true)
          std::cout << "unable to load ate.res file.\n";
+
+    mean_error_file.open("mean_error.res");
 
 
     /************* opening fileModel.xml **********************/
@@ -85,7 +88,7 @@ main(int argc, char *argv[])
     ate_data.erase(8,10);
     mean_error = (float)atof(ate_data.c_str());
     cout<<mean_error<<endl;
-
+    mean_error_file<<mean_error;
 
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
