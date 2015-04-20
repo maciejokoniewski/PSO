@@ -29,20 +29,6 @@ main(int argc, char *argv[])
 
     tinyxml2::XMLElement* varianceDepth = model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->ToElement();
 
-    obiektPSO.location=obiektPSO.random(n);
-    obiektPSO.v=obiektPSO.random(n);
-
-    sprintf(c0, "%f", obiektPSO.location[0][0]);
-    sprintf(c1, "%f", obiektPSO.location[0][1]);
-    sprintf(c2, "%f", obiektPSO.location[0][2]);
-    sprintf(c3, "%f", obiektPSO.location[0][3]);
-    varianceDepth->SetAttribute("c0", c0);
-    varianceDepth->SetAttribute("c1", c1);
-    varianceDepth->SetAttribute("c2", c2);
-    varianceDepth->SetAttribute("c3", c3);
-
-    model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
-
     //generating path for ate with argv[1]
     std::string path11;
     std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
@@ -57,6 +43,21 @@ main(int argc, char *argv[])
     std::string part22("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
     path21=part21+str+part22;
     const char *path2 = path21.c_str();
+
+    obiektPSO.location=obiektPSO.random(n);
+    obiektPSO.v=obiektPSO.random(n);
+
+    sprintf(c0, "%f", obiektPSO.location[0][0]);
+    sprintf(c1, "%f", obiektPSO.location[0][1]);
+    sprintf(c2, "%f", obiektPSO.location[0][2]);
+    sprintf(c3, "%f", obiektPSO.location[0][3]);
+    varianceDepth->SetAttribute("c0", c0);
+    varianceDepth->SetAttribute("c1", c1);
+    varianceDepth->SetAttribute("c2", c2);
+    varianceDepth->SetAttribute("c3", c3);
+
+    model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
+
 
     //std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
     std::system(path1);
