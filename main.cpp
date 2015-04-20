@@ -16,9 +16,11 @@ main(int argc, char *argv[])
     tinyxml2::XMLDocument model;
     int n = 100;                        //population's quantity
     std::fstream ate_file;
+    std::string ate_data;
+    float mean_error;
 
     ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
-    if(!ate_file.is_open())
+    if(!ate_file.good() == true)
          std::cout << "unable to load ate.res file.\n";
 
     model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
@@ -60,6 +62,15 @@ main(int argc, char *argv[])
     std::system(path1);
     std::system(path2);
 
+
+
+    for(int i=0;i<2;i++)
+        getline(ate_file,ate_data);
+
+    ate_data.erase(0,34);
+    ate_data.erase(8,10);
+    mean_error = (double)atof(ate_data.c_str());
+    cout<<mean_error<<endl;
 
 
 
