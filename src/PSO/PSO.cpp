@@ -1,5 +1,6 @@
 #include "../include/PSO/PSO.h"
 #include "../include/Defs/PSO_defs.h"
+#include <math.h>
 #include <random>
 
 using namespace PSON;
@@ -42,10 +43,49 @@ vecNN PSO::random(int n)
 }
 
 //function calculates velocity of each praticle in given iteraion
-vecf PSO::velocity()
+vecf PSO::velocity(vecf Local_min, vecf Global_min, vecf Position, vecf V)
 {
+   std::random_device rd;
+   std::mt19937 gen(rd());
+   std::uniform_real_distribution<> dis(0, 1);
+   vecf n_v;
+   float r1,r2;
+   float x;
+   r1=dis(gen);
+   r2=dis(gen);
+   for(int i=0; i<4; i++)
+   {
+       x=V[i]+r1*(Local_min[i]-Position[i])+r2*(Global_min[i]-Position[i]);
+       n_v.push_back(x);
+   }
+    return n_v;
+}
 
+vecf PSO::new_position(vecf n_v, vecf Position)
+{
+    vecf n_p;
+    float x;
+    for(int i=0; i<4; i++)
+    {
+        x=Position[i]+n_v[i];
+        n_p.push_back(x);
+    }
 
+    return n_p;
+}
 
+vecf PSO::LocalMin()
+{
+    vecf L_M;
+
+    return L_M;
+
+}
+
+vecf PSO::GlobalMin()
+{
+    vecf G_M;
+
+    return G_M;
 
 }

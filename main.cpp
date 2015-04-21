@@ -18,7 +18,7 @@ main(int argc, char *argv[])
     std::fstream ate_file;
     std::ofstream mean_error_file;
     std::string ate_data;
-    float mean_error;
+    vector<float> mean_error;
 
     /************* generating path for ate with argv[1] **********************/
     std::string path11;
@@ -53,13 +53,15 @@ main(int argc, char *argv[])
     /************* random location and velocity **********************/
     obiektPSO.position=obiektPSO.random(n);
     obiektPSO.v=obiektPSO.random(n);
+    obiektPSO.local_min=obiektPSO.position;
 
-
+for(int i=0; i<10; i++)
+{
     /************* converting float position to char and setting attributes to fileModel.xml **********************/
-    sprintf(c0, "%f", obiektPSO.position[0][0]);
-    sprintf(c1, "%f", obiektPSO.position[0][1]);
-    sprintf(c2, "%f", obiektPSO.position[0][2]);
-    sprintf(c3, "%f", obiektPSO.position[0][3]);
+    sprintf(c0, "%f", obiektPSO.position[i][0]);
+    sprintf(c1, "%f", obiektPSO.position[i][1]);
+    sprintf(c2, "%f", obiektPSO.position[i][2]);
+    sprintf(c3, "%f", obiektPSO.position[i][3]);
     varianceDepth->SetAttribute("c0", c0);
     varianceDepth->SetAttribute("c1", c1);
     varianceDepth->SetAttribute("c2", c2);
@@ -71,7 +73,7 @@ main(int argc, char *argv[])
 
 
     /************* running PUTSLAM and scripts evaluate_ate.py, evaluate_rpe.py **********************/
-   // std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
+    std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
     std::system(path1);
     //std::system(path2);
 
@@ -87,12 +89,18 @@ main(int argc, char *argv[])
         getline(ate_file,ate_data);
     ate_data.erase(0,34);
     ate_data.erase(8,10);
-    mean_error = (float)atof(ate_data.c_str());
-    cout<<mean_error<<endl;
-    mean_error_file<<mean_error<<endl;
+    mean_error.push_back((float)atof(ate_data.c_str()));
+    cout<<mean_error[i]<<endl;
+    mean_error_file<<mean_error[i]<<endl;
 
     ate_file.close();
 }
+   float global_min_error[2];
+   auto globalm=min_element(mean_error.begin(),mean_error.end());
+   std::cout<<std::distance(std::begin(mean_error), globalm)<<std::endl;
+   global_min_error[0]=*globalm;
+   obiektPSO.global_min.push_back(obiektPSO.position[std::distance(std::begin(mean_error), globalm)]);
+
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
     const char* C1=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c1");
@@ -113,7 +121,7 @@ main(int argc, char *argv[])
     cout<<endl;
     }*/
 
-
+    }
     catch (const std::exception& ex)
     {
 

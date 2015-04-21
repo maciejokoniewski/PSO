@@ -11,12 +11,14 @@ using namespace PSON;
 
 class PSO {
 public:
-    vecNN position,v;
+    vecNN position,v,local_min,global_min;
 
     /* definitions of functions for PSO class */
     vecNN random(int n);
-    vecf velocity();
-
+    vecf velocity(vecf Local_min, vecf Global_min, vecf Position, vecf V);
+    vecf new_position(vecf n_v, vecf Position);
+    vecf LocalMin();
+    vecf GlobalMin();
 
 };
 
