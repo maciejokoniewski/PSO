@@ -20,24 +20,6 @@ main(int argc, char *argv[])
     std::string ate_data;
     float mean_error;
 
-
-    /************* opening ate.res **********************/
-    ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
-    if(!ate_file.good() == true)
-         std::cout << "unable to load ate.res file.\n";
-
-    mean_error_file.open("mean_error.res");
-
-
-    /************* opening fileModel.xml **********************/
-    model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
-    if (model.ErrorID())
-         std::cout << "unable to load config file.\n";
-
-
-    tinyxml2::XMLElement* varianceDepth = model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->ToElement();
-
-
     /************* generating path for ate with argv[1] **********************/
     std::string path11;
     std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
@@ -53,6 +35,19 @@ main(int argc, char *argv[])
     std::string part22("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
     path21=part21+str+part22;
     const char *path2 = path21.c_str();
+
+
+    mean_error_file.open("mean_error.res");
+
+
+    /************* opening fileModel.xml **********************/
+    model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
+    if (model.ErrorID())
+         std::cout << "unable to load config file.\n";
+
+
+    tinyxml2::XMLElement* varianceDepth = model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->ToElement();
+
 
 
     /************* random location and velocity **********************/
@@ -76,20 +71,28 @@ main(int argc, char *argv[])
 
 
     /************* running PUTSLAM and scripts evaluate_ate.py, evaluate_rpe.py **********************/
-    //std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
+   // std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
     std::system(path1);
-    std::system(path2);
+    //std::system(path2);
+
+
+    /************* opening ate.res **********************/
+    ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
+    if(!ate_file.good() == true)
+         std::cout << "unable to load ate.res file.\n";
 
 
     /********** cuting mean error ande converting to float *************/
-    for(int i=0;i<2;i++)
+    for(int i=0;i<3;i++)
         getline(ate_file,ate_data);
     ate_data.erase(0,34);
     ate_data.erase(8,10);
     mean_error = (float)atof(ate_data.c_str());
     cout<<mean_error<<endl;
-    mean_error_file<<mean_error;
+    mean_error_file<<mean_error<<endl;
 
+    ate_file.close();
+}
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");
     const char* C1=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c1");
@@ -111,7 +114,6 @@ main(int argc, char *argv[])
     }*/
 
 
-        }
     catch (const std::exception& ex)
     {
 
