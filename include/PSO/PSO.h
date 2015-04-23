@@ -9,17 +9,26 @@
 using namespace std;
 using namespace PSON;
 
-class PSO {
-public:
-    vecNN position,v,local_min,global_min;
 
-    /* definitions of functions for PSO class */
-    vecNN random(int n);
-    vecf velocity(vecf Local_min, vecf Global_min, vecf Position, vecf V);
-    vecf new_position(vecf n_v, vecf Position);
-    vecf LocalMin();
-    vecf GlobalMin();
+class particle {
+public:
+    vecd position,v,local_min;
+    /* definitions of functions for particle class */
+    void move_particle(vecd Local_min, vecd Global_min, vecd Position, vecd V);
+    vecd velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V);
+    vecd new_position(vecd n_v, vecd Position);
 
 };
+
+class PSO {
+public:
+    vector<particle> swarm;
+    vecd global_min;
+    /* definitions of functions for PSO class */
+    vecd random();
+
+
+};
+
 
 #endif // _PSO_

@@ -11,17 +11,21 @@ main(int argc, char *argv[])
     try{
 
 
-    PSO obiektPSO;
-    char c0[30],c1[30],c2[30],c3[30];
+    PSO SWARM;
+    particle PARTICLE;
+
+
+
+/*    char c0[30],c1[30],c2[30],c3[30];
     tinyxml2::XMLDocument model;
     int n = 100;                        //population's quantity
     std::fstream ate_file;
     std::ofstream mean_error_file;
     std::string ate_data;
-    vector<float> mean_error;
+    vecd mean_error;
 
     /************* generating path for ate with argv[1] **********************/
-    std::string path11;
+/*    std::string path11;
     std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
     std::string part12("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
     std::string str(argv[1]);
@@ -30,7 +34,7 @@ main(int argc, char *argv[])
 
 
     /************* generating path for rpe with argv[1] **********************/
-    std::string path21;
+/*    std::string path21;
     std::string part21("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_rpe.py /home/");
     std::string part22("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --delta_unit 'f' --fixed_delta --plot rpe.png > rpe.res");
     path21=part21+str+part22;
@@ -41,7 +45,7 @@ main(int argc, char *argv[])
 
 
     /************* opening fileModel.xml **********************/
-    model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
+/*    model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
     if (model.ErrorID())
          std::cout << "unable to load config file.\n";
 
@@ -51,17 +55,17 @@ main(int argc, char *argv[])
 
 
     /************* random location and velocity **********************/
-    obiektPSO.position=obiektPSO.random(n);
+    /*obiektPSO.position=obiektPSO.random(n);
     obiektPSO.v=obiektPSO.random(n);
-    obiektPSO.local_min=obiektPSO.position;
+    obiektPSO.local_min=obiektPSO.position;*/
 
-for(int i=0; i<10; i++)
+/*for(int i=0; i<10; i++)
 {
     /************* converting float position to char and setting attributes to fileModel.xml **********************/
-    sprintf(c0, "%f", obiektPSO.position[i][0]);
-    sprintf(c1, "%f", obiektPSO.position[i][1]);
-    sprintf(c2, "%f", obiektPSO.position[i][2]);
-    sprintf(c3, "%f", obiektPSO.position[i][3]);
+ /*   sprintf(c0, "%f", 0.002);
+    sprintf(c1, "%f", 0.045);
+    sprintf(c2, "%f", 0.034);
+    sprintf(c3, "%f", 0.0001);
     varianceDepth->SetAttribute("c0", c0);
     varianceDepth->SetAttribute("c1", c1);
     varianceDepth->SetAttribute("c2", c2);
@@ -69,23 +73,23 @@ for(int i=0; i<10; i++)
 
 
     /************* saving fileModel.xml **********************/
-    model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
+ /*   model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
 
 
     /************* running PUTSLAM and scripts evaluate_ate.py, evaluate_rpe.py **********************/
-    std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
+/*    std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
     std::system(path1);
     //std::system(path2);
 
 
     /************* opening ate.res **********************/
-    ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
+/*    ate_file.open( "../../../PUTSLAM/build/bin/ate.res", std::ios::in | std::ios::out );
     if(!ate_file.good() == true)
          std::cout << "unable to load ate.res file.\n";
 
 
     /********** cuting mean error ande converting to float *************/
-    for(int i=0;i<3;i++)
+/*    for(int i=0;i<3;i++)
         getline(ate_file,ate_data);
     ate_data.erase(0,34);
     ate_data.erase(8,10);
@@ -99,7 +103,7 @@ for(int i=0; i<10; i++)
    auto globalm=min_element(mean_error.begin(),mean_error.end());
    std::cout<<std::distance(std::begin(mean_error), globalm)<<std::endl;
    global_min_error[0]=*globalm;
-   obiektPSO.global_min.push_back(obiektPSO.position[std::distance(std::begin(mean_error), globalm)]);
+   //obiektPSO.global_min.push_back(obiektPSO.position[std::distance(std::begin(mean_error), globalm)]);
 
 
 /*   const char* C0=model.FirstChildElement( "Model" )->FirstChildElement( "varianceDepth" )->Attribute("c0");

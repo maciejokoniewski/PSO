@@ -9,17 +9,15 @@ using namespace PSON;
 
 //function random draws random numbers from the range 0 to 1 in order to create population of particles
 //x is vector of whole population; C is vector which represents one member of population; n is size of population
-vecNN PSO::random(int n)
+vecd PSO::random()
 {
-    vecNN x;
-    vecf C;
-    float C1,C2,C3,C4;
+
+    vecd C;
+    double C1,C2,C3,C4;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, 1);
 
-    for(int i=0; i<n; i++)
-    {
 
     //creating one member
     C1=dis(gen);
@@ -31,29 +29,22 @@ vecNN PSO::random(int n)
     C.push_back(C3);
     C.push_back(C4);
 
-    //adding member to population
-    x.push_back(C);
 
-    //freeing place for another member
-    C.clear();
-
-    }
-
-    return x;
+    return C;
 }
 
 //function calculates velocity of each praticle in given iteraion
-vecf PSO::velocity(vecf Local_min, vecf Global_min, vecf Position, vecf V)
+vecd particle::velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V)
 {
    std::random_device rd;
    std::mt19937 gen(rd());
    std::uniform_real_distribution<> dis(0, 1);
-   vecf n_v;
-   float r1,r2;
-   float x;
+   vecd n_v;
+   double r1,r2;
+   double x;
    r1=dis(gen);
    r2=dis(gen);
-   for(int i=0; i<4; i++)
+   for(int i=0; i<Position.size(); i++)
    {
        x=V[i]+r1*(Local_min[i]-Position[i])+r2*(Global_min[i]-Position[i]);
        n_v.push_back(x);
@@ -61,11 +52,11 @@ vecf PSO::velocity(vecf Local_min, vecf Global_min, vecf Position, vecf V)
     return n_v;
 }
 
-vecf PSO::new_position(vecf n_v, vecf Position)
+vecd particle::new_position(vecd n_v, vecd Position)
 {
-    vecf n_p;
-    float x;
-    for(int i=0; i<4; i++)
+    vecd n_p;
+    double x;
+    for(int i=0; i<Position.size(); i++)
     {
         x=Position[i]+n_v[i];
         n_p.push_back(x);
@@ -74,18 +65,12 @@ vecf PSO::new_position(vecf n_v, vecf Position)
     return n_p;
 }
 
-vecf PSO::LocalMin()
+void particle::move_particle(vecd Local_min, vecd Global_min, vecd Position, vecd V)
 {
-    vecf L_M;
-
-    return L_M;
-
-}
-
-vecf PSO::GlobalMin()
-{
-    vecf G_M;
-
-    return G_M;
+        vecd v,p;
+        v=velocity(Local_min,Global_min,Position,V);
+        p=new_position(v,Position);
+        this->v=v;
+        this->position=p;
 
 }
