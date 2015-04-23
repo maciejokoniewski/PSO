@@ -6,7 +6,7 @@
 using namespace std;
 using namespace PSON;
 
-double f_kw(double x);
+double f_kw(double x, double y);
 
 main(int argc, char *argv[])
 {
@@ -25,8 +25,8 @@ main(int argc, char *argv[])
     PARTICLE.local_min=PARTICLE.position;
     SWARM.swarm.push_back(PARTICLE);
 
-    SWARM.swarm[i].y.push_back(f_kw(SWARM.swarm[i].position[0]));
-    yg.push_back(f_kw(SWARM.swarm[i].position[0]));
+    SWARM.swarm[i].y.push_back(f_kw(SWARM.swarm[i].position[0],SWARM.swarm[i].position[1]));
+    yg.push_back(f_kw(SWARM.swarm[i].position[0],SWARM.swarm[i].position[1]));
     }
 
 
@@ -47,11 +47,11 @@ main(int argc, char *argv[])
          for(int i=0; i<n; i++)
          {
 
-             for(int k=0; k<PARTICLE.position.size(); k++)
-              {
-                 yg.push_back(f_kw(SWARM.swarm[i].position[k]));
-                 SWARM.swarm[i].y.push_back(f_kw(SWARM.swarm[i].position[k]));
-              }
+             //for(int k=0; k<PARTICLE.position.size(); k++)
+              //{
+                 yg.push_back(f_kw(SWARM.swarm[i].position[0],SWARM.swarm[i].position[1]));
+                 SWARM.swarm[i].y.push_back(f_kw(SWARM.swarm[i].position[0],SWARM.swarm[i].position[1]));
+              //}
              if(SWARM.swarm[i].y[j+1] < SWARM.swarm[i].y[j])
             {
                 SWARM.swarm[i].local_min = SWARM.swarm[i].position;
@@ -201,12 +201,12 @@ j++;
 return 0;
 }
 
-double f_kw(double x)
+double f_kw(double x,double y)
 {
-    double y;
+    double z;
 
-    y = pow(x, 4)+2*pow(x,3)-40*pow(x,2)+12*x-3 ;
-    //x^4+2x^3-40x^2+12x-3
+    z = pow(x, 4)+2*pow(x,3)-40*pow(x,2)+12*x-3+pow(y, 4)+2*pow(y,3)-40*pow(y,2)+12*y-3 ;
+    //x^4+2x^3-40x^2+12x-3+ y^4+2y^3-40y^2+12y-3
 
-    return y;
+    return z;
 }

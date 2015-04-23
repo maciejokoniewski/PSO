@@ -25,7 +25,7 @@ vecd PSO::random()
     C3=dis(gen);
     C4=dis(gen);
     C.push_back(C1);
-    //C.push_back(C2);
+    C.push_back(C2);
     //C.push_back(C3);
     //C.push_back(C4);
 
@@ -46,7 +46,7 @@ vecd particle::velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V)
    r2=dis(gen);
    for(int i=0; i<Position.size(); i++)
    {
-       x=V[i]+r1*(Local_min[i]-Position[i])+r2*(Global_min[i]-Position[i]);
+       x=0.7*V[i]+r1*(Local_min[i]-Position[i])+r2*(Global_min[i]-Position[i]);
        n_v.push_back(x);
    }
     return n_v;
