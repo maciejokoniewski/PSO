@@ -15,7 +15,7 @@ main(int argc, char *argv[])
 
     PSO SWARM;
     particle PARTICLE;
-    int n = 10 ;
+    int n = 100 ;
     vecd yg;
 
     for(int i=0; i<n; i++)
@@ -39,7 +39,7 @@ main(int argc, char *argv[])
     SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[0]);
 
     int j = 0;
-    while(global_min_error[0]>0.5001&j<8000)
+    while(j<2000)
     {
         yg.clear();
          for(int i=0; i<n; i++)
@@ -72,6 +72,8 @@ main(int argc, char *argv[])
 cout<<"global_p= "<<global_min_error[0]<<" dla j="<<j<<" dla x="<<SWARM.global_min[0]<<endl;
 for(int i=0; i<n; i++)
 cout<<SWARM.swarm[i].position[0]<<endl;
+
+
 j++;
     }
 
@@ -203,7 +205,8 @@ double f_kw(double x)
 {
     double y;
 
-    y = 2*pow(x, 2) - 2*x + 1;
+    y = pow(x, 4)+2*pow(x,3)-40*pow(x,2)+12*x-3 ;
+    //x^4+2x^3-40x^2+12x-3
 
     return y;
 }

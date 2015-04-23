@@ -16,7 +16,7 @@ vecd PSO::random()
     double C1,C2,C3,C4;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-10, 1);
+    std::uniform_real_distribution<> dis(-10, 10);
 
 
     //creating one member
@@ -38,7 +38,7 @@ vecd particle::velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V)
 {
    std::random_device rd;
    std::mt19937 gen(rd());
-   std::uniform_real_distribution<> dis(0, 1);
+   std::uniform_real_distribution<> dis(0, 0.5);
    vecd n_v;
    double r1,r2;
    double x;
