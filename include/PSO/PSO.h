@@ -12,7 +12,7 @@ using namespace PSON;
 
 class particle {
 public:
-    vecd position,v,local_min;
+    vecd position,v,local_min,y;
     /* definitions of functions for particle class */
     void move_particle(vecd Local_min, vecd Global_min, vecd Position, vecd V);
     vecd velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V);

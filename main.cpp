@@ -6,6 +6,8 @@
 using namespace std;
 using namespace PSON;
 
+double f_kw(double x);
+
 main(int argc, char *argv[])
 {
     try{
@@ -13,7 +15,67 @@ main(int argc, char *argv[])
 
     PSO SWARM;
     particle PARTICLE;
+    int n = 10 ;
+    vecd yg;
 
+    for(int i=0; i<n; i++)
+    {
+    PARTICLE.position=SWARM.random();
+    PARTICLE.v=SWARM.random();
+    PARTICLE.local_min=PARTICLE.position;
+    SWARM.swarm.push_back(PARTICLE);
+
+    SWARM.swarm[i].y.push_back(f_kw(SWARM.swarm[i].position[0]));
+    yg.push_back(f_kw(SWARM.swarm[i].position[0]));
+    }
+
+
+    double global_min_error[2];
+    auto globalp=min_element(yg.begin(),yg.end());
+    std::cout<<std::distance(std::begin(yg), globalp)<<std::endl;
+    global_min_error[0]=*globalp;
+    cout<<global_min_error[0]<<endl;
+    global_min_error[1]=1.5;
+    SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[0]);
+
+    int j = 0;
+    while(global_min_error[0]>0.5001&j<8000)
+    {
+        yg.clear();
+         for(int i=0; i<n; i++)
+           SWARM.swarm[i].move_particle(SWARM.swarm[i].local_min,SWARM.global_min,SWARM.swarm[i].position,SWARM.swarm[i].v);
+         for(int i=0; i<n; i++)
+         {
+
+             for(int k=0; k<PARTICLE.position.size(); k++)
+              {
+                 yg.push_back(f_kw(SWARM.swarm[i].position[k]));
+                 SWARM.swarm[i].y.push_back(f_kw(SWARM.swarm[i].position[k]));
+              }
+             if(SWARM.swarm[i].y[j+1] < SWARM.swarm[i].y[j])
+            {
+                SWARM.swarm[i].local_min = SWARM.swarm[i].position;
+            }
+            else
+                SWARM.swarm[i].y[j+1] = SWARM.swarm[i].y[j];
+         }
+         globalp=min_element(yg.begin(),yg.end());
+         global_min_error[1]=*globalp;
+         if(global_min_error[1]<global_min_error[0])
+         {
+             SWARM.global_min.clear();
+             std::swap(global_min_error[1],global_min_error[0]);
+             SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[0]);
+
+         }
+
+cout<<"global_p= "<<global_min_error[0]<<" dla j="<<j<<" dla x="<<SWARM.global_min[0]<<endl;
+for(int i=0; i<n; i++)
+cout<<SWARM.swarm[i].position[0]<<endl;
+j++;
+    }
+
+    cout<<global_min_error[0]<<"   "<<SWARM.global_min[0]<<endl;
 
 
 /*    char c0[30],c1[30],c2[30],c3[30];
@@ -135,4 +197,13 @@ main(int argc, char *argv[])
     }
 
 return 0;
+}
+
+double f_kw(double x)
+{
+    double y;
+
+    y = 2*pow(x, 2) - 2*x + 1;
+
+    return y;
 }

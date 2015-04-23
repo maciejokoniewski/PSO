@@ -16,7 +16,7 @@ vecd PSO::random()
     double C1,C2,C3,C4;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(0, 1);
+    std::uniform_real_distribution<> dis(-10, 1);
 
 
     //creating one member
@@ -25,9 +25,9 @@ vecd PSO::random()
     C3=dis(gen);
     C4=dis(gen);
     C.push_back(C1);
-    C.push_back(C2);
-    C.push_back(C3);
-    C.push_back(C4);
+    //C.push_back(C2);
+    //C.push_back(C3);
+    //C.push_back(C4);
 
 
     return C;
@@ -67,6 +67,8 @@ vecd particle::new_position(vecd n_v, vecd Position)
 
 void particle::move_particle(vecd Local_min, vecd Global_min, vecd Position, vecd V)
 {
+        this->position.clear();
+        this->v.clear();
         vecd v,p;
         v=velocity(Local_min,Global_min,Position,V);
         p=new_position(v,Position);
