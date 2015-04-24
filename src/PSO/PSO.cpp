@@ -16,7 +16,7 @@ vecd PSO::random()
     double C1,C2,C3,C4;
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-10, 10);
+    std::uniform_real_distribution<> dis(0, 1);
 
 
     //creating one member
@@ -26,8 +26,8 @@ vecd PSO::random()
     C4=dis(gen);
     C.push_back(C1);
     C.push_back(C2);
-    //C.push_back(C3);
-    //C.push_back(C4);
+    C.push_back(C3);
+    C.push_back(C4);
 
 
     return C;
