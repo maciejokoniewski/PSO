@@ -68,7 +68,8 @@ main(int argc, char *argv[])
 
     /************* saving fileModel.xml **********************/
     model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
-
+    try
+    {
     /************* running PUTSLAM and scripts evaluate_ate.py **************************/
     std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
     std::system(path1);
@@ -89,6 +90,13 @@ main(int argc, char *argv[])
     SWARM.swarm[i].y.push_back((double)atof(ate_data.c_str()));
     yg.push_back((double)atof(ate_data.c_str()));
     }
+    catch(...)
+    {
+
+        SWARM.swarm[i].y.push_back(0.5);
+        yg.push_back(0.5);
+    }
+    }
 
 
     double global_min_error[2];
@@ -102,7 +110,7 @@ main(int argc, char *argv[])
     mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<endl;
 
     int j = 0;
-    while(j<2000)
+    while(j<10)
     {
         yg.clear();
          for(int i=0; i<n; i++)
@@ -124,6 +132,8 @@ main(int argc, char *argv[])
              /************* saving fileModel.xml **********************/
              model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
 
+             try
+             {
              /************* running PUTSLAM and scripts evaluate_ate.py **************************/
              std::system("cd ../../../PUTSLAM/build/bin; ./demoMatching");
              std::system(path1);
@@ -143,6 +153,14 @@ main(int argc, char *argv[])
 
              SWARM.swarm[i].y.push_back((double)atof(ate_data.c_str()));
              yg.push_back((double)atof(ate_data.c_str()));
+             }
+             catch(...)
+             {
+
+                 SWARM.swarm[i].y.push_back((double)atof(ate_data.c_str()));
+                 yg.push_back((double)atof(ate_data.c_str()));
+
+             }
 
              if(SWARM.swarm[i].y[j+1] < SWARM.swarm[i].y[j])
             {
@@ -169,7 +187,7 @@ cout<<"global_p= "<<global_min_error[0]<<endl;
 j++;
     }
 /**************************************************************************************************************************/
-    cout<<global_min_error[0]<<"   "<<SWARM.global_min[0]<<endl;
+    cout<<global_min_error[0]<<endl;
     mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<endl;
 
 
