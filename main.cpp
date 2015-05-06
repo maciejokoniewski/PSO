@@ -189,7 +189,7 @@ j++;
 /**************************************************************************************************************************/
     cout<<global_min_error[0]<<endl;
     mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<endl;
-
+    mean_error_file.close();
 
 
     }
