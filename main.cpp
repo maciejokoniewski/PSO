@@ -15,27 +15,34 @@ main(int argc, char *argv[])
 
     PSO SWARM;
     particle PARTICLE;
-    int n = 100 ;
+    int n = 150;
     vecd yg;
+
 
     char c0[30],c1[30],c2[30],c3[30];
     tinyxml2::XMLDocument model;
     std::fstream ate_file;
     std::ofstream mean_error_file;
+    std::ofstream particles;
+    std::ofstream ate;
     std::string ate_data;
-    vecd mean_error;
+
 
 
     /************* generating path for ate with argv[1] **********************/
     std::string path11;
     std::string part11("cd ../../../PUTSLAM/build/bin; python2 ../../scripts/evaluate_ate.py /home/");
-    std::string part12("/Datasets/rgbd_dataset_freiburg1_desk/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");
+    std::string part12("/Datasets/");
+    std::string path13("/groundtruth.txt graph_trajectory.res --verbose --scale 1 --save_associations ate_association.res --plot ate.png > ate.res");;
     std::string str(argv[1]);
-    path11=part11+str+part12;
+    std::string str2(argv[2]);
+    path11=part11+str+part12+str2+path13;
     const char *path1 = path11.c_str();
 
 
-    mean_error_file.open("mean_error.res");
+    mean_error_file.open("mean_error.txt");
+    particles.open("particles.txt");
+    ate.open("ate_all.txt");
 
     /************* opening fileModel.xml **********************/
     model.LoadFile("../../../PUTSLAM/resources/fileModel.xml");
@@ -65,6 +72,7 @@ main(int argc, char *argv[])
     varianceDepth->SetAttribute("c1", c1);
     varianceDepth->SetAttribute("c2", c2);
     varianceDepth->SetAttribute("c3", c3);
+    particles<<"n["<<i<<"]"<<" c0= "<<c0<<" c1= "<<c1<<" c2= "<<c2<<" c3= "<<c3<<std::endl;
 
     /************* saving fileModel.xml **********************/
     model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
@@ -80,12 +88,13 @@ main(int argc, char *argv[])
          std::cout << "unable to load ate.res file.\n";
 
 
-    /********** cuting mean error **********************/
-    for(int i=0;i<3;i++)
+    /********** cutting mean error **********************/
+    for(int q=0;q<3;q++)
         getline(ate_file,ate_data);
     ate_data.erase(0,34);
     ate_data.erase(8,10);
     ate_file.close();
+    ate<<ate_data<<endl;
 
     SWARM.swarm[i].y.push_back((double)atof(ate_data.c_str()));
     yg.push_back((double)atof(ate_data.c_str()));
@@ -95,6 +104,7 @@ main(int argc, char *argv[])
 
         SWARM.swarm[i].y.push_back(0.5);
         yg.push_back(0.5);
+
     }
     }
 
@@ -105,12 +115,16 @@ main(int argc, char *argv[])
     global_min_error[0]=*globalp;
     cout<<global_min_error[0]<<endl;
     global_min_error[1]=10;
-    for(int i=0; i<n; i++)
-        SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[i]);
-    mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<endl;
+    for(int k=0; k<n; k++)
+        SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[k]);
+    double mean_error_swarm=0;
+    for(int m=0; m<yg.size(); m++)
+        mean_error_swarm=mean_error_swarm+yg[m];
+    mean_error_swarm=mean_error_swarm/yg.size();
+    mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<" mean_error_swarm="<<mean_error_swarm<<endl;
 
     int j = 0;
-    while(j<10)
+    while(j<10000)
     {
         yg.clear();
          for(int i=0; i<n; i++)
@@ -128,7 +142,7 @@ main(int argc, char *argv[])
              varianceDepth->SetAttribute("c1", c1);
              varianceDepth->SetAttribute("c2", c2);
              varianceDepth->SetAttribute("c3", c3);
-
+             particles<<"j = "<<j<<" n["<<i<<"]"<<" c0= "<<c0<<" c1= "<<c1<<" c2= "<<c2<<" c3= "<<c3<<std::endl;
              /************* saving fileModel.xml **********************/
              model.SaveFile("../../../PUTSLAM/resources/fileModel.xml");
 
@@ -145,12 +159,12 @@ main(int argc, char *argv[])
 
 
              /********** cuting mean error **********************/
-             for(int i=0;i<3;i++)
+             for(int q=0;q<3;q++)
                  getline(ate_file,ate_data);
              ate_data.erase(0,34);
              ate_data.erase(8,10);
              ate_file.close();
-
+             ate<<ate_data<<endl;
              SWARM.swarm[i].y.push_back((double)atof(ate_data.c_str()));
              yg.push_back((double)atof(ate_data.c_str()));
              }
@@ -159,8 +173,10 @@ main(int argc, char *argv[])
 
                  SWARM.swarm[i].y.push_back((double)atof(ate_data.c_str()));
                  yg.push_back((double)atof(ate_data.c_str()));
+             //    particles<<"blad"<<std::endl;
 
              }
+
 
              if(SWARM.swarm[i].y[j+1] < SWARM.swarm[i].y[j])
             {
@@ -176,20 +192,24 @@ main(int argc, char *argv[])
              SWARM.global_min.clear();
              std::swap(global_min_error[1],global_min_error[0]);
              SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[0]);
-             mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<endl;
-
 
          }
 
-cout<<"global_p= "<<global_min_error[0]<<endl;
+         mean_error_swarm=0;
+         for(int k=0; k<yg.size(); k++)
+             mean_error_swarm=mean_error_swarm+yg[k];
+         mean_error_swarm=mean_error_swarm/yg.size();
 
+            cout<<"global_p= "<<global_min_error[0]<<endl;
+            mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<" mean_error_swarm="<<mean_error_swarm<<endl;
 
 j++;
     }
 /**************************************************************************************************************************/
     cout<<global_min_error[0]<<endl;
-    mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<endl;
+    mean_error_file<<"min_error="<<global_min_error[0]<<" C0="<<SWARM.global_min[0]<<" C1="<<SWARM.global_min[1]<<" C2="<<SWARM.global_min[2]<<" C3="<<SWARM.global_min[3]<<" mean_error_swarm="<<mean_error_swarm<<endl;
     mean_error_file.close();
+    particles.close();
 
 
     }

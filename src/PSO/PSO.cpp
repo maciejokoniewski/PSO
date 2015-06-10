@@ -38,7 +38,7 @@ vecd particle::velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V)
 {
    std::random_device rd;
    std::mt19937 gen(rd());
-   std::uniform_real_distribution<> dis(0, 0.5);
+   std::uniform_real_distribution<> dis(0, 1);
    vecd n_v;
    double r1,r2;
    double x;
@@ -46,7 +46,7 @@ vecd particle::velocity(vecd Local_min, vecd Global_min, vecd Position, vecd V)
    r2=dis(gen);
    for(int i=0; i<Position.size(); i++)
    {
-       x=0.7*V[i]+r1*(Local_min[i]-Position[i])+r2*(Global_min[i]-Position[i]);
+       x=0.729*V[i]+1.49445*r1*(Local_min[i]-Position[i])+0.8*r2*(Global_min[i]-Position[i]);
        n_v.push_back(x);
    }
     return n_v;
