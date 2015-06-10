@@ -15,7 +15,7 @@ main(int argc, char *argv[])
 
     PSO SWARM;
     particle PARTICLE;
-    int n = 150;
+    int n = 100;
     vecd yg;
 
 
@@ -191,7 +191,8 @@ main(int argc, char *argv[])
          {
              SWARM.global_min.clear();
              std::swap(global_min_error[1],global_min_error[0]);
-             SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[0]);
+             for(int k=0; k<SWARM.swarm[1].position.size(); k++)
+             SWARM.global_min.push_back(SWARM.swarm[distance(std::begin(yg), globalp)].position[k]);
 
          }
 
